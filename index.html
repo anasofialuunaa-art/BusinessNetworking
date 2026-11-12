@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ethical Analysis Project | EBC Chiapas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1524; --primary:#1F4E8C; --secondary:#3F6FA8; --accent:#B8C7DB;
+  --bg:#F5F6F8; --card:#FFFFFF; --text:#1E2A3A; --muted:#5F6B7A; --line:#DDE2E9;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --sans:Inter,'Segoe UI',system-ui,sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#0C1320; --card:#141E2E; --text:#E4E9F0; --muted:#98A5B6; --line:#26344A;
+  --primary:#7FA6D6; --secondary:#9DBBE0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{font-family:var(--sans);font-size:1rem;line-height:1.7;background:var(--bg);color:var(--text);
+  -webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+h1,h2,h3,h4,.logo{font-family:var(--serif);font-weight:600;letter-spacing:-.01em}
+p,ul{margin-bottom:14px}
+ul{margin-left:22px}
+:focus-visible{outline:2px solid var(--secondary);outline-offset:3px}
+
+/* NAVBAR */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;
+  padding:14px 36px;background:var(--navy);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo{font-size:1.1rem;color:#fff}
+.nav-links{display:flex;gap:26px;list-style:none;margin:0}
+.nav-links a{color:#C9D4E3;text-decoration:none;font-size:.9rem;font-weight:500;padding:6px 0;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+.nav-links a:hover{color:#fff}
+.nav-links a.active{color:#fff;border-color:#8FB0D6}
+.nav-tools{display:flex;gap:8px}
+.icon-btn{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:6px 12px;font:500 .85rem var(--sans);cursor:pointer}
+.icon-btn:hover{background:rgba(255,255,255,.1)}
+#menu-toggle{display:none}
+#progress{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:#8FB0D6}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;color:#fff;text-align:center;padding:150px 20px 110px;
+  background:linear-gradient(120deg,#0B1524,#16345C,#1F4E8C,#16345C,#0B1524);background-size:300% 300%;animation:flow 20s ease infinite}
+@keyframes flow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
+.hero-content{position:relative;z-index:1}
+.hero h1{font-size:clamp(2rem,4.6vw,3.2rem);line-height:1.15;font-weight:700;max-width:860px;margin:0 auto 20px}
+.hero p{max-width:700px;margin:0 auto 28px;font-size:1.08rem;color:#D5DEEA}
+.rot{display:inline-block;margin:0 0 22px;padding:6px 16px;border:1px solid rgba(255,255,255,.3);border-radius:4px;
+  font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:#C9D4E3}
+.rot strong{color:#fff}
+#rotator{display:inline-block;min-width:11ch;transition:opacity .3s,transform .3s}
+#rotator.out{opacity:0;transform:translateY(6px)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.btn{display:inline-block;border:1px solid transparent;cursor:pointer;text-decoration:none;font:600 .95rem var(--sans);
+  background:#fff;color:var(--navy);padding:12px 28px;border-radius:6px;transition:transform .2s,background .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.6)}
+.btn.ghost:hover{background:rgba(255,255,255,.1)}
+.btn.solid{background:var(--primary);color:#fff}
+[data-theme="dark"] .btn.solid{color:#0C1320}
+
+/* SECCIONES */
+main{width:90%;max-width:1040px;margin:0 auto;padding:40px 0;counter-reset:sec}
+.block{background:var(--card);padding:44px;margin-bottom:28px;border:1px solid var(--line);border-radius:8px}
+.block h2{font-size:clamp(1.6rem,3vw,2.1rem);margin-bottom:18px;color:var(--text)}
+.block h2::before{counter-increment:sec;content:"0" counter(sec);display:block;font:600 .78rem var(--sans);
+  letter-spacing:.16em;color:var(--secondary);margin-bottom:8px}
+.block p{max-width:68ch}
+.badge{display:inline-block;border:1px solid var(--line);color:var(--muted);font-size:.78rem;font-weight:500;padding:1px 10px;border-radius:4px;margin-left:6px}
+
+/* PROBLEMA */
+.problem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:22px 0 30px}
+.problem{padding:24px;background:var(--bg);border:1px solid var(--line);border-top:3px solid var(--primary);border-radius:6px}
+.problem span{font:600 1.6rem var(--serif);color:var(--primary)}
+.problem h3{margin:4px 0 6px;font-size:1.15rem}
+.problem p{margin:0;color:var(--muted)}
+.check{display:flex;gap:12px;align-items:center;padding:12px 16px;margin-bottom:8px;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:border-color .2s}
+.check:hover{border-color:var(--secondary)}
+.check input{width:18px;height:18px;accent-color:var(--primary)}
+.meter{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin:18px 0 10px}
+.meter div{height:100%;width:0;background:var(--primary);transition:width .4s}
+#meter-text{font-weight:600;color:var(--primary)}
+
+/* VIDEOS */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
+.video{aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#000}
+.video button{width:100%;height:100%;border:0;cursor:pointer;color:#fff;font:500 .95rem var(--sans);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  background:#000 center/contain no-repeat;position:relative;transition:filter .2s}
+.video button::before{content:"";position:absolute;inset:0;background:rgba(11,21,36,.45)}
+.video button>*{position:relative}
+.video button span{text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.notice{background:#FFF4E5;border:1px solid #E0A458;color:#5B3A00;padding:14px 18px;border-radius:6px;margin-bottom:16px;font-size:.92rem;line-height:1.55}
+.video-error{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:20px;color:#fff;background:#16212f;font-size:.9rem}
+.video button:hover{filter:brightness(1.15)}
+.video button svg{width:48px;height:48px}
+.video video,.video iframe{width:100%;height:100%;border:0;object-fit:contain;background:#000;display:block}
+
+/* GRAFICAS */
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin:22px 0 28px}
+.chart{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:22px}
+.chart h3{font:600 .98rem var(--sans);color:var(--text);margin-bottom:18px;line-height:1.45}
+.row{margin-bottom:14px}
+.row-top{display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:5px}
+.track{height:10px;background:var(--line);border-radius:3px;overflow:hidden}
+.fill{height:100%;width:0;border-radius:3px;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.chart.in .fill{width:var(--w)}
+.donut{width:160px;height:160px;display:block;margin:0 auto 16px;transform:rotate(-90deg)}
+.seg{fill:none;stroke-width:5;stroke-dasharray:0 100;transition:stroke-dasharray 1s ease}
+.chart.in .seg{stroke-dasharray:var(--len) 100}
+.legend{list-style:none;margin:0;display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;font-size:.88rem}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
+
+/* MURO */
+.wall-form{display:grid;gap:10px;max-width:580px;margin:18px 0 8px}
+.wall-form input,.wall-form textarea{font:inherit;padding:12px 14px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+.row2{display:flex;justify-content:space-between;align-items:center}
+.count{color:var(--muted);font-size:.85rem}
+.notes{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:22px}
+.note{padding:18px;background:var(--bg);border:1px solid var(--line);border-left:4px solid var(--primary);border-radius:6px}
+.note p{margin:0 0 12px;overflow-wrap:anywhere}
+.who{font-weight:600;font-size:.88rem;color:var(--muted);margin-bottom:10px}
+.like{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:4px;padding:4px 12px;cursor:pointer;font:500 .82rem var(--sans)}
+.like:hover{border-color:var(--secondary)}
+.empty{grid-column:1/-1;color:var(--muted)}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.del{color:var(--muted)}
+.del:hover,.del.confirm{border-color:#B3261E;color:#B3261E}
+
+/* BRUJULA */
+.compass{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:22px}
+.pledge{text-align:left;font:inherit;color:var(--text);border:1px solid var(--line);background:var(--bg);border-radius:6px;padding:22px;cursor:pointer;transition:border-color .2s}
+.pledge:hover{border-color:var(--secondary)}
+.pledge .ico{font:600 1.5rem var(--serif);color:var(--primary)}
+.pledge h3{margin:6px 0 6px;font-size:1.1rem}
+.pledge span{display:block}
+.pledge .short{color:var(--muted);font-size:.95rem}
+.pledge .more{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);font-size:.93rem}
+.pledge[aria-expanded="true"]{background:var(--card);border-color:var(--primary)}
+.pledge[aria-expanded="true"] .more{display:block}
+
+/* FOOTER */
+footer{background:var(--navy);color:#fff;padding:48px 5% 22px}
+.foot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;max-width:1100px;margin:0 auto 28px}
+footer h4{font-size:1rem;margin-bottom:12px;color:#B8C7DB}
+footer ul{list-style:none;margin:0}
+footer li{margin-bottom:6px;font-size:.9rem;color:#C9D4E3}
+footer p{font-size:.9rem;color:#C9D4E3;margin:0}
+footer .copy{text-align:center;border-top:1px solid rgba(255,255,255,.15);padding-top:18px;font-size:.85rem}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  #menu-toggle{display:block}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:4px;background:var(--navy);padding:14px;text-align:center}
+  .nav-links.open{display:flex}
+  .logo{font-size:.95rem;max-width:60%}
+}
+@media(max-width:600px){.block{padding:28px 22px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">Ethical Analysis at EBC Campus Chiapas</div>
+  <ul class="nav-links" id="nav-links"></ul>
+  <div class="nav-tools">
+    <button class="icon-btn" id="theme-toggle" aria-label="Switch theme">Dark</button>
+    <button class="icon-btn" id="menu-toggle" aria-label="Open menu">Menu</button>
+  </div>
+  <div id="progress"></div>
+</nav>
+
+<header class="hero">
+  <canvas id="net" aria-hidden="true"></canvas>
+  <div class="hero-content">
+    <h1>Business Networking Opportunities at EBC Campus Chiapas</h1>
+    <p class="rot">Ethical focus: <strong id="rotator">Transparency</strong></p>
+    <p>Ethical analysis of transparency, student expectations, and professional networking opportunities within educational institutions.</p>
+    <div class="hero-actions">
+      <a class="btn" href="#justice">Watch the videos</a>
+      <a class="btn ghost" href="https://forms.gle/BMGuMYUDT26gSApf9">Answer the survey</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="block" id="home">
+    <h2>Home and our problem</h2>
+    <p>Business networking is sold at EBC Campus Chiapas as one of the best reasons to study here. But when we asked students, the same two doubts kept coming back.</p>
+    <div class="problem-grid">
+      <div class="problem"><span>01</span><h3>Vague information</h3><p>Which companies? What kind of opportunities? How do I get in? How often?</p></div>
+      <div class="problem"><span>02</span><h3>Few local options</h3><p>The professional opportunities in the region feel limited compared to what is promised.</p></div>
+    </div>
+    <p id="check"><strong>Test it:</strong> check what you know for certain about networking at EBC Chiapas.</p>
+    <div id="checklist"></div>
+    <div class="meter" role="progressbar" aria-label="Clarity of information"><div id="meter-bar"></div></div>
+    <p id="meter-text">Nothing checked yet.</p>
+  </section>
+
+  <section class="block" id="justice">
+    <h2>One minute of justice</h2>
+    <p>Four short videos about the problem. Tap one to play it.</p>
+    <div class="video-grid" id="videos"></div>
+  </section>
+
+  <section class="block" id="survey">
+    <h2>Survey</h2>
+    <p>This is what students answered. <span class="badge" id="sample-badge">Sample data</span></p>
+    <div class="charts" id="charts"></div>
+    <a class="btn solid" href="https://forms.gle/BMGuMYUDT26gSApf9">Answer the survey</a>
+  </section>
+
+  <section class="block" id="wall">
+    <h2>Commitment Wall</h2>
+    <p>What will you do to make networking more transparent? Leave your commitment or opinion.</p>
+    <div class="wall-form" id="wall-form">
+      <input id="wall-name" maxlength="30" placeholder="Your name (optional)" aria-label="Your name">
+      <textarea id="wall-msg" maxlength="240" rows="3" placeholder="I commit to..." aria-label="Your commitment or opinion"></textarea>
+      <div class="row2"><span class="count" id="wall-count">0/240</span><button class="btn solid" type="button" id="wall-post">Post to the wall</button></div>
+    </div>
+    <p class="count">Comments are saved on this device.</p>
+    <div class="notes" id="notes"></div>
+  </section>
+
+  <section class="block" id="compass">
+    <h2>Moral Compass</h2>
+    <p>Our dilemma: should a school only say that opportunities exist, or also say how limited and reachable they really are? Our answer is to tell the whole truth. Tap each commitment to see why.</p>
+    <div class="compass" id="compass-list"></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div><h4>Team members</h4><ul>
+      <li>Andrea Sofia Minueza Luna</li>
+      <li>Carlos Eduardo Espinosa Ferra</li>
+      <li>Miguel Angel Espinosa Escobar</li>
+      <li>Ximena Flores de Los Santos</li>
+    </ul></div>
+    <div><h4>Permission</h4>
+      <p>Videos and survey answers are used only for this academic project. Add here how permission was obtained from the people who appear in them.</p></div>
+    <div><h4>Tools</h4><ul>
+      <li>HTML, CSS and JavaScript</li><li>Google Forms (survey)</li><li>Google Drive (videos)</li>
+      <li>Google Fonts: Source Serif 4, Inter</li><li>Claude (AI assistant for code support)</li>
+    </ul></div>
+    <div><h4>References</h4><ul>
+      <li>Reference 1 (add in APA format)</li><li>Reference 2 (add in APA format)</li>
+    </ul></div>
+  </div>
+  <p class="copy">Ethical Analysis Project • EBC Campus Chiapas</p>
+</footer>
+
+<script>
+/* ===== DATOS (edita aquí el contenido) ===== */
+const SURVEY_URL = "https://forms.gle/BMGuMYUDT26gSApf9";
+const sections = [
+  ["home","Home"],["justice","One Minute of Justice"],["survey","Survey"],
+  ["wall","Commitment Wall"],["compass","Moral Compass"]
+];
+
+const checklistItems = [
+  "Which companies participate in networking events",
+  "What types of opportunities are offered",
+  "How a student can access them",
+  "How often the activities take place"
+];
+const meterMessages = [
+  "Nothing checked yet.",
+  "Very unclear: most key information is missing.",
+  "Partly clear: students still can't plan around it.",
+  "Mostly clear: one detail is still missing.",
+  "Clear: students can make an informed decision."
+];
+
+/* Videos: archivos dentro de la carpeta videos/ (poster = miniatura) */
+const videoList = [
+  { src:"videos/video1.mp4", poster:"videos/poster1.jpg", title:"Video 1" },
+  { src:"videos/video2.mp4", poster:"videos/poster2.jpg", title:"Video 2" },
+  { src:"videos/video3.mp4", poster:"videos/poster3.jpg", title:"Video 3" },
+  { src:"videos/video4.mp4", poster:"videos/poster4.jpg", title:"Video 4" }
+];
+
+/* Encuesta: pon aquí los CONTEOS reales de cada respuesta. Después cambia SAMPLE_DATA a false. */
+const SAMPLE_DATA = true;
+const surveyCharts = [
+  { type:"donut", q:"Do you know which companies take part in networking events?",
+    data:[["Yes",12],["Not sure",28],["No",60]] },
+  { type:"bar", q:"How clear is the information you received? (1 = not clear, 5 = very clear)",
+    data:[["1",30],["2",30],["3",25],["4",10],["5",5]] },
+  { type:"bar", q:"Are there enough professional opportunities in Chiapas?",
+    data:[["Yes",15],["Some",30],["No",55]] }
+];
+
+const pledges = [
+  { icon:"01", title:"Name the companies", short:"Publish a public list of partner companies.",
+    why:"Students can't judge an opportunity they can't see. Naming partners turns a promise into something checkable." },
+  { icon:"02", title:"Explain how to join", short:"Show who can apply, when, and how.",
+    why:"Clear steps give every student the same chance, not only those who already know someone." },
+  { icon:"03", title:"Share the calendar", short:"Post dates of events and activities each term.",
+    why:"Knowing how often things happen lets students plan their time and their expectations." },
+  { icon:"04", title:"Be honest about limits", short:"Say what the region can and cannot offer.",
+    why:"Honesty builds more trust than a perfect promise, and it lets students decide with real information." }
+];
+
+/* ===== MENÚ ===== */
+const navLinks = document.getElementById("nav-links");
+navLinks.innerHTML = sections.map(([id,label]) => `<li><a href="#${id}">${label}</a></li>`).join("");
+document.getElementById("menu-toggle").onclick = () => navLinks.classList.toggle("open");
+navLinks.onclick = () => navLinks.classList.remove("open");
+
+/* Sección activa con IntersectionObserver */
+const links = [...navLinks.querySelectorAll("a")];
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + e.target.id));
+    }
+  });
+}, { rootMargin: "-40% 0px -55% 0px" });
+sections.forEach(([id]) => observer.observe(document.getElementById(id)));
+
+/* Barra de progreso de lectura */
+const progress = document.getElementById("progress");
+addEventListener("scroll", () => {
+  const max = document.documentElement.scrollHeight - innerHeight;
+  progress.style.width = (max > 0 ? scrollY / max * 100 : 0) + "%";
+});
+
+/* ===== HERO: RED DE NODOS ANIMADA (simboliza el networking) ===== */
+const hero = document.querySelector(".hero");
+const canvas = document.getElementById("net");
+const ctx = canvas.getContext("2d");
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let nodes = [], W = 0, H = 0, heroVisible = true;
+const mouse = { x: null, y: null };
+
+function resizeCanvas(){
+  const dpr = devicePixelRatio || 1;
+  W = hero.clientWidth; H = hero.clientHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const count = Math.min(90, Math.round(W * H / 14000));
+  nodes = Array.from({ length: count }, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - .5) * .6, vy: (Math.random() - .5) * .6,
+    r: Math.random() * 2 + 1.5
+  }));
+}
+
+function drawNetwork(){
+  ctx.clearRect(0, 0, W, H);
+  nodes.forEach(n => {
+    if (!reduceMotion) {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    }
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,255,255,.9)";
+    ctx.fill();
+  });
+  // Líneas entre nodos cercanos (y hacia el mouse)
+  const points = mouse.x === null ? nodes : [...nodes, mouse];
+  for (let i = 0; i < points.length; i++) {
+    for (let j = i + 1; j < points.length; j++) {
+      const d = Math.hypot(points[i].x - points[j].x, points[i].y - points[j].y);
+      const limit = (points[i] === mouse || points[j] === mouse) ? 170 : 120;
+      if (d < limit) {
+        ctx.strokeStyle = `rgba(255,255,255,${(1 - d / limit) * .6})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(points[i].x, points[i].y);
+        ctx.lineTo(points[j].x, points[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function loop(){
+  if (heroVisible) drawNetwork();
+  if (!reduceMotion) requestAnimationFrame(loop);
+}
+
+hero.addEventListener("pointermove", e => {
+  const r = hero.getBoundingClientRect();
+  mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+});
+hero.addEventListener("pointerleave", () => { mouse.x = mouse.y = null; });
+new IntersectionObserver(([e]) => { heroVisible = e.isIntersecting; }).observe(hero);
+addEventListener("resize", resizeCanvas);
+resizeCanvas();
+loop();
+
+/* Palabra rotativa del encabezado */
+const words = ["Transparency", "Honesty", "Fairness", "Integrity", "Informed choice"];
+const rotator = document.getElementById("rotator");
+let w = 0;
+if (!reduceMotion) setInterval(() => {
+  rotator.classList.add("out");
+  setTimeout(() => {
+    w = (w + 1) % words.length;
+    rotator.textContent = words[w];
+    rotator.classList.remove("out");
+  }, 300);
+}, 2200);
+
+/* ===== MODO OSCURO ===== */
+const themeBtn = document.getElementById("theme-toggle");
+function setTheme(t){
+  document.documentElement.dataset.theme = t;
+  themeBtn.textContent = t === "dark" ? "Light" : "Dark";
+  try { localStorage.setItem("theme", t); } catch(e){}
+}
+let saved = null;
+try { saved = localStorage.getItem("theme"); } catch(e){}
+setTheme(saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+themeBtn.onclick = () => setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+
+/* ===== CHECKLIST INTERACTIVO ===== */
+const checklist = document.getElementById("checklist");
+checklist.innerHTML = checklistItems.map((t,i) =>
+  `<label class="check"><input type="checkbox" data-i="${i}"> I know ${t.charAt(0).toLowerCase() + t.slice(1)}</label>`).join("");
+checklist.addEventListener("change", () => {
+  const n = checklist.querySelectorAll("input:checked").length;
+  document.getElementById("meter-bar").style.width = (n / checklistItems.length * 100) + "%";
+  document.getElementById("meter-text").textContent = meterMessages[n];
+});
+
+/* ===== VIDEOS (se cargan al hacer clic) ===== */
+const videosEl = document.getElementById("videos");
+videosEl.innerHTML = videoList.map((v,i) => `
+  <div class="video"><button data-i="${i}" aria-label="Play ${v.title}" style="background-image:url('${v.poster}')">
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="24" cy="24" r="22"/><path d="M20 16l13 8-13 8z" fill="currentColor" stroke="none"/></svg>
+    <span>${v.title}</span></button></div>`).join("");
+/* Aviso si no se encuentra la carpeta videos/ junto al HTML */
+const probe = new Image();
+probe.onerror = () => {
+  const n = document.createElement("div");
+  n.className = "notice";
+  n.innerHTML = "<b>No se encontró la carpeta “videos”.</b> Debe estar en la misma carpeta que este archivo HTML. Extrae el zip completo (clic derecho, Extraer todo) y abre el index.html de la carpeta extraída.";
+  videosEl.before(n);
+};
+probe.src = videoList[0].poster;
+videosEl.onclick = e => {
+  const btn = e.target.closest("button[data-i]");
+  if (!btn) return;
+  const v = videoList[+btn.dataset.i];
+  const box = btn.parentElement;
+  box.innerHTML = `<video src="${v.src}" poster="${v.poster}" controls autoplay playsinline preload="metadata"></video>`;
+  box.querySelector("video").addEventListener("error", () => {
+    box.innerHTML = `<div class="video-error"><b>This video could not be loaded.</b><span>Make sure the <b>videos</b> folder is in the same folder as index.html.</span></div>`;
+  });
+};
+
+/* ===== GRÁFICAS DE LA ENCUESTA ===== */
+const PALETTE = ["#16345C","#3F6FA8","#8FB0D6","#C5D3E3","#6B7C93"];
+document.getElementById("sample-badge").hidden = !SAMPLE_DATA;
+const chartsEl = document.getElementById("charts");
+chartsEl.innerHTML = surveyCharts.map(c => {
+  const total = c.data.reduce((sum,d) => sum + d[1], 0) || 1;
+  const pct = v => Math.round(v / total * 100);
+  let body = "";
+  if (c.type === "donut") {
+    let start = 0;
+    body = `<svg class="donut" viewBox="0 0 36 36" role="img" aria-label="${c.q}">` +
+      c.data.map(([l,v],i) => {
+        const len = v / total * 100;
+        const seg = `<circle class="seg" r="15.915" cx="18" cy="18" stroke="${PALETTE[i]}" style="--len:${len};stroke-dashoffset:${-start}"/>`;
+        start += len; return seg;
+      }).join("") + `</svg><ul class="legend">` +
+      c.data.map(([l,v],i) => `<li><i style="background:${PALETTE[i]}"></i>${l} <b>${pct(v)}%</b></li>`).join("") + `</ul>`;
+  } else {
+    body = c.data.map(([l,v],i) => `
+      <div class="row"><div class="row-top"><span>${l}</span><b>${pct(v)}%</b></div>
+      <div class="track"><div class="fill" style="--w:${pct(v)}%;background:${PALETTE[i % PALETTE.length]}"></div></div></div>`).join("");
+  }
+  return `<div class="chart"><h3>${c.q}</h3>${body}</div>`;
+}).join("");
+const chartObserver = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) e.target.classList.add("in");
+}), { threshold: .3 });
+chartsEl.querySelectorAll(".chart").forEach(c => chartObserver.observe(c));
+
+/* ===== COMMITMENT WALL ===== */
+/* Nota: usa localStorage, así que cada visitante ve solo sus propios comentarios.
+   Para un muro compartido hace falta un servidor (Firebase, Supabase, etc.). */
+const WALL_KEY = "commitment-wall";
+const NOTE_COLORS = ["#16345C","#3F6FA8","#6B7C93","#8FB0D6","#2F5D8A"];
+let notes = [];
+try { notes = JSON.parse(localStorage.getItem(WALL_KEY)) || []; } catch(e){}
+const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+notes.forEach(n => { if (!n.id) n.id = newId(); });
+const saveNotes = () => { try { localStorage.setItem(WALL_KEY, JSON.stringify(notes)); } catch(e){} };
+const notesEl = document.getElementById("notes");
+const msgEl = document.getElementById("wall-msg");
+const nameEl = document.getElementById("wall-name");
+const countEl = document.getElementById("wall-count");
+
+function renderWall(){
+  notesEl.innerHTML = "";
+  if (!notes.length) {
+    notesEl.innerHTML = '<p class="empty">No commitments yet. Be the first to write one.</p>';
+    return;
+  }
+  notes.forEach(n => {
+    const d = document.createElement("div");
+    d.className = "note";
+    d.style.setProperty("--tilt", n.tilt + "deg");
+    d.style.borderLeftColor = n.color;
+    const p = document.createElement("p"); p.textContent = n.text;
+    const who = document.createElement("div"); who.className = "who"; who.textContent = "— " + n.name;
+    const like = document.createElement("button"); like.className = "like"; like.textContent = "Support · " + n.likes;
+    like.onclick = () => { n.likes++; saveNotes(); renderWall(); };
+    const del = document.createElement("button"); del.className = "like del"; del.textContent = "Delete";
+    let timer;
+    del.onclick = () => {
+      if (!del.classList.contains("confirm")) {
+        del.classList.add("confirm"); del.textContent = "Click again to confirm";
+        timer = setTimeout(() => { del.classList.remove("confirm"); del.textContent = "Delete"; }, 3000);
+        return;
+      }
+      clearTimeout(timer);
+      notes = notes.filter(x => x.id !== n.id);
+      saveNotes(); renderWall();
+    };
+    const actions = document.createElement("div"); actions.className = "actions";
+    actions.append(like, del);
+    d.append(p, who, actions);
+    notesEl.append(d);
+  });
+}
+msgEl.oninput = () => { countEl.textContent = msgEl.value.length + "/240"; };
+function postNote(){
+  const text = msgEl.value.trim();
+  if (!text) return;
+  notes.unshift({
+    id: newId(),
+    text: text.slice(0,240),
+    name: (nameEl.value.trim() || "Anonymous").slice(0,30),
+    color: NOTE_COLORS[notes.length % NOTE_COLORS.length],
+    tilt: +(Math.random() * 4 - 2).toFixed(1),
+    likes: 0
+  });
+  saveNotes();
+  msgEl.value = ""; nameEl.value = "";
+  countEl.textContent = "0/240";
+  renderWall();
+}
+document.getElementById("wall-post").onclick = postNote;
+msgEl.addEventListener("keydown", e => { if ((e.ctrlKey || e.metaKey) && e.key === "Enter") postNote(); });
+renderWall();
+
+/* ===== MORAL COMPASS ===== */
+document.getElementById("compass-list").innerHTML = pledges.map(p => `
+  <button class="pledge" aria-expanded="false">
+    <span class="ico">${p.icon}</span>
+    <h3>${p.title}</h3>
+    <span class="short">${p.short}</span>
+    <span class="more"><b>Why it matters:</b> ${p.why}</span>
+  </button>`).join("");
+document.getElementById("compass-list").onclick = e => {
+  const b = e.target.closest(".pledge");
+  if (b) b.setAttribute("aria-expanded", b.getAttribute("aria-expanded") !== "true");
+};
+</script>
+</body>
+</html>
